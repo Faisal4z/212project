@@ -1,4 +1,18 @@
-import java.util.ArrayList;
+/***************
+	    CLASS: PhaseOne.java
+	    CSC212 Data structures - Project phase I
+	    Fall 2023
+	    EDIT DATE:
+	    
+	    TEAM:
+	    Data Craftsmen.
+	    AUTHORS:
+	    authors-names:
+	    Abdulaziz Almousa , (443101909).
+	    Faisal Mohammed Alomran , (443102216).
+	    Mohammed Alrabah , (437106719).
+	    
+	    *************/
 
 public class BST<T> {
 	BSTNode<T> root, current;
@@ -107,17 +121,18 @@ public class BST<T> {
 		return p;
 	}
 
-	public void inOrderTraversal(BSTNode<T> root) {
+	public void PrintAll(BSTNode<T> root) {
 		if (root != null) {
 			// Traverse the left subtree
-			inOrderTraversal(root.left);
+			PrintAll(root.left);
 			// Print the current node's value
 			if (root.data instanceof Contact)
 				((Contact) root.data).Display();
 			else
 				((Event) root.data).Display();
 			// Traverse the right subtree
-			inOrderTraversal(root.right);
+			
+			PrintAll(root.right);
 		}
 	}
 
@@ -173,7 +188,7 @@ public class BST<T> {
 		return false;// does not find it//1
 		// bigO(n^2)
 	}
-
+	
 	public void PrintEventMatchesContact(String contactName, BSTNode<T> broot, BooleanWrapper flag) {
 		if (broot != null) {
 			PrintEventMatchesContact(contactName, broot.left, flag);
@@ -189,12 +204,14 @@ public class BST<T> {
 		}
 	}
 
+
 	public boolean PrintByFirstName(String val, BSTNode<T> broot, BooleanWrapper flag) {
-		
+		// System.out.print("teeeeest111");
+		// int x=0;
 		if (broot != null) {
 			PrintByFirstName(val, broot.left, flag);
 
-			String spiltNames[] = ((Contact) broot.data).getName().split(" "); // n^2 //to take the first name;
+			String spiltNames[] = ((Contact) broot.data).getName().split(" "); //to take the first name;
 			String firstName = spiltNames[0]; // n
 			if (firstName.equalsIgnoreCase(val)) { // n
 				((Contact) broot.data).Display(); // n
@@ -236,7 +253,6 @@ public class BST<T> {
 			System.out.print(e.getMessage());
 		}
 	}
-
 	public void inOrderCheekingtheDate(String conName, String dateAndTime, BSTNode<T> broot, BooleanWrapper flag) {
 
 		if (broot != null) {
@@ -250,7 +266,7 @@ public class BST<T> {
 					return;
 				}
 			}
-
+System.out.print("tests");
 			inOrderCheekingtheDate(conName, dateAndTime, broot.right, flag);
 		}
 	}

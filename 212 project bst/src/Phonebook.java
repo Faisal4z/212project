@@ -4,7 +4,7 @@
 	    CSC212 Data structures - Project phase I
 	    Fall 2023
 	    EDIT DATE:
-	    17-10-2023
+	    
 	    TEAM:
 	    Data Craftsmen.
 	    AUTHORS:
@@ -13,7 +13,6 @@
 	    Faisal Mohammed Alomran , (443102216).
 	    Mohammed Alrabah , (437106719).
 	    *************/
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -63,7 +62,6 @@ public class Phonebook {
 
 					break;
 				case 3:
-					BstOfContact.inOrderTraversal(BstOfContact.root);
 					deletingContacts();
 
 					break;
@@ -149,8 +147,8 @@ public class Phonebook {
 					return;
 				}
 			} else {
-				BooleanWrapper Exist =new BooleanWrapper(false);
-				BstOfContact.searchForContact(x, text, BstOfContact.root,Exist );
+				BooleanWrapper Exist = new BooleanWrapper(false);
+				BstOfContact.searchForContact(x, text, BstOfContact.root, Exist);
 				if (Exist.getValue()) {
 					BstOfContact.retrieve().Display();
 					return;
@@ -284,7 +282,7 @@ public class Phonebook {
 			System.out.print("Enter event location: ");// 1
 
 			location = intInput.nextLine();// 1
-			textInput.nextLine();
+			//textInput.nextLine();
 
 			if (!BstOfContact.findkey(conName)) {// nLog(n)
 
@@ -309,8 +307,8 @@ public class Phonebook {
 
 				Event newEvent = new Event(evnTitle, dateAndTime, location);// 1
 
-				newEvent.getInvolvedContacts().insert(c.getName(), c);// 1
-				BstOfevent.insert(newEvent.getEventTitle(), newEvent);// n^2
+				newEvent.getInvolvedContacts().insert(c.getName(), c);// nLog(n)
+				BstOfevent.insert(newEvent.getEventTitle(), newEvent);// nLog(n)
 
 				System.out.println("\nEvent scheduled successfully!\n");// 1
 				// O()
@@ -341,7 +339,8 @@ public class Phonebook {
 			System.out.println("\nThere is no contact added yet\n");// 1
 
 	}
-
+/* we can put it in the menu if you want
+ * 
 	public void printAllCountacts() {
 		// حاليا هذي مؤقته فقط للإختبار
 		if (!BstOfContact.empty()) {// 1
@@ -355,7 +354,7 @@ public class Phonebook {
 			System.out.println("There is no contact strting with this name\n");// 1
 		// bigO(n)
 	}
-
+*/
 	public void printEventDetails() {
 
 		try {// 1
@@ -420,25 +419,24 @@ public class Phonebook {
 			return;// 1
 		}
 
-		BstOfevent.inOrderTraversal(BstOfevent.root);
+		BstOfevent.PrintAll(BstOfevent.root);//inOrder
 
 	}
 
-	// bigO()
-
+// bigO()
 	public void deletingContacts() {
 
 		if (BstOfContact.empty()) {// 1
 			System.out.println("you don't have a contact yet\n");// 1
 			return;// 1
 		}
-		System.out.println("enter the contact\'s name: ");// 1
+		System.out.print("\nenter the contact's name: ");// 1
 		String contactName = textInput.nextLine();// 1
-		textInput.nextLine();// 1
+		
 
 		// if their is no contact by this name
 		if (!BstOfContact.findkey(contactName)) {//
-			System.out.println("their is no contact by this name try again\n");// 1
+			System.out.println("\ntheir is no contact by this name try again!");// 1
 			return;// 1
 		} else {// 1
 			// the contact is exist
@@ -454,12 +452,13 @@ public class Phonebook {
 			}
 			// this method well pass on all event to ceeck if there is a contact inside the
 			// event well delete and
-			// after delete it if number of contact inside the event =0 well delete the
+			// after delete it if number of contact inside the event = 0 well delete the
 			// event also
-			
+
 			BstOfevent.inOrderDeletingcountacts(contactName, BstOfevent.root);
-		
+
 			// bigO()
 		}
 	}
+
 }

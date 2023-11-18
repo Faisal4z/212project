@@ -1,3 +1,18 @@
+/***************
+	    CLASS: PhaseOne.java
+	    CSC212 Data structures - Project phase I
+	    Fall 2023
+	    EDIT DATE:
+	    
+	    TEAM:
+	    Data Craftsmen.
+	    AUTHORS:
+	    authors-names:
+	    Abdulaziz Almousa , (443101909).
+	    Faisal Mohammed Alomran , (443102216).
+	    Mohammed Alrabah , (437106719).
+	    
+	    *************/
 
 public class BSTNode<T> {
 	    public String key;  
