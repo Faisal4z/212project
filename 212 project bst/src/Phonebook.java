@@ -16,6 +16,8 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.management.relation.InvalidRoleInfoException;
+
 public class Phonebook {
 
 	private BST<Contact> BstOfContact;
@@ -38,7 +40,7 @@ public class Phonebook {
 				System.out.println("1.Add a contact");
 				System.out.println("2.Search for a contact");
 				System.out.println("3.Delete a contact");
-				System.out.println("4.Schedule an event");
+				System.out.println("4.Schedule an event/appointment");
 				System.out.println("5.Add a contact to the Event");
 				System.out.println("6.Print event detils");
 				System.out.println("7.Print contacts by first name");
@@ -220,7 +222,6 @@ public class Phonebook {
 
 	public void addContactsToAnEvent() {// this method well add a contact to exist event
 		try {
-
 			if (!BstOfevent.empty()) {
 
 				System.out.print("Please enter the title of the event: ");
@@ -228,6 +229,10 @@ public class Phonebook {
 
 				if (!BstOfevent.findkey(eventTitle)) {
 					System.out.println("\nthe event does not exist\n");
+					return;
+				}
+				else if(BstOfevent.retrieve().getEventOrAppointment()==0) {
+					System.out.print("this is an appointment so you can't");
 					return;
 				}
 				Event e = BstOfevent.retrieve();
@@ -262,13 +267,14 @@ public class Phonebook {
 
 	public void scheduleEvent() {// this method well create an event and add one contact insid it
 		String evnTitle, conName, dateAndTime, location;// 1
+		int isEventOrAppointent;
 		try {// 1
 
 			System.out.print("Enter event title: ");// 1
 
 			evnTitle = textInput.nextLine();// 1
 
-			System.out.print("Enter event date and time (dd/mm/yyyy hh:mm): ");
+			System.out.print("Enter event/appointment date and time (dd/mm/yyyy hh:mm): ");
 			dateAndTime = textInput.nextLine();
 			if (dateAndTime.length() < 15 || dateAndTime.length() > 17) {// 1
 				System.out.print("\nthe date does't currect try again with this format (dd/mm/yyyy hh:mm)\n");// 1
@@ -283,12 +289,14 @@ public class Phonebook {
 
 			location = intInput.nextLine();// 1
 			//textInput.nextLine();
-
+			System.out.println("enter 1 if you would like to book and event or 0 if you want to book an appointment");
+			isEventOrAppointent = intInput.nextInt();
+			if(isEventOrAppointent!=0 || isEventOrAppointent!=0) {
+				throw new InputMismatchException("this is an invalid input");
+			}
 			if (!BstOfContact.findkey(conName)) {// nLog(n)
-
 				System.out.println("\nThe contact doesn't exist in this phoebook!!\n");// 1
 				return;// 1
-
 			} else {// 1
 				Contact c = BstOfContact.retrieve();
 				if (!BstOfevent.empty()) {// 1
@@ -305,8 +313,8 @@ public class Phonebook {
 					}
 				}
 
-				Event newEvent = new Event(evnTitle, dateAndTime, location);// 1
-
+				Event newEvent = new Event(evnTitle, dateAndTime, location, isEventOrAppointent);// 1
+				
 				newEvent.getInvolvedContacts().insert(c.getName(), c);// nLog(n)
 				BstOfevent.insert(newEvent.getEventTitle(), newEvent);// nLog(n)
 

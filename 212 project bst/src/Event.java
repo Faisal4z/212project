@@ -17,14 +17,16 @@ public class Event implements Comparable<Event> {
 	private String eventTitle;
 	private String dateAndTime;
 	private String location;
+	//1 for event, 0 for appointment
+	private int eventOrAppointment;
 	private BST<Contact> involvedContacts;
 
-	public Event(String eventTitle, String dateAndTime, String location) {
+	public Event(String eventTitle, String dateAndTime, String location, int eventOrAppointment) {
 		this.eventTitle = eventTitle;
 		this.dateAndTime = dateAndTime;
 		this.location = location;
 		involvedContacts = new BST<Contact>();
-
+		this.eventOrAppointment=eventOrAppointment;
 	}
 
 	public String getEventTitle() {
@@ -38,7 +40,9 @@ public class Event implements Comparable<Event> {
 	public String getLocation() {
 		return location;
 	}
-
+	public int getEventOrAppointment() {
+		return eventOrAppointment;
+	}
 	public BST<Contact> getInvolvedContacts() {
 		return involvedContacts;
 	}
