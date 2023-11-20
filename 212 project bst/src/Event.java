@@ -17,7 +17,7 @@ public class Event implements Comparable<Event> {
 	private String eventTitle;
 	private String dateAndTime;
 	private String location;
-	//1 for event, 0 for appointment
+	//1 for event, 2 for appointment
 	private int eventOrAppointment;
 	private BST<Contact> involvedContacts;
 
@@ -48,19 +48,24 @@ public class Event implements Comparable<Event> {
 	}
 
 	public void Display() {
+		String type;
+		if (eventOrAppointment == 1) {
+			type = "Event";
+		} else
+			type = "Appointment";
 
-		System.out.println("\nEvent title: " + eventTitle);
+		System.out.println("\n"+type +" title: " + eventTitle);
 
 		System.out.println("Contact's name:");
-		//involvedContacts.findFirst();
+		
 		IntWrapper count = new IntWrapper(0);
 		
 			// for print all names of contact inside the event
 		involvedContacts.PrintAllNamesOfcontact(count,involvedContacts.root );
 			
 		
-		System.out.println("Event date and time (DD/MM/YYYY HH:MM): " + dateAndTime);// 1
-		System.out.println("Event location: " + location);// 1
+		System.out.println(type +" date and time (DD/MM/YYYY HH:MM): " + dateAndTime);// 1
+		System.out.println(type +" location: " + location);// 1
 
 		System.out.println("\n");// 1
 	}// bigO(n)

@@ -199,8 +199,7 @@ public class BST<T> {
 	}
 
 	public boolean PrintByFirstName(String val, BSTNode<T> broot, BooleanWrapper flag) {
-		// System.out.print("teeeeest111");
-		// int x=0;
+		
 		if (broot != null) {
 			PrintByFirstName(val, broot.left, flag);
 

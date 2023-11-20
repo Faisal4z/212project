@@ -40,12 +40,12 @@ public class Phonebook {
 				System.out.println("1.Add a contact");
 				System.out.println("2.Search for a contact");
 				System.out.println("3.Delete a contact");
-				System.out.println("4.Schedule an event/appointment");
+				System.out.println("4.Schedule an event or appointment");
 				System.out.println("5.Add a contact to the Event");
-				System.out.println("6.Print event detils");
+				System.out.println("6.Print event or appointment detils");
 				System.out.println("7.Print contacts by first name");
-				System.out.println("8.Print all events alphabetically");
-				System.out.println("9.Delete Event");
+				System.out.println("8.Print all events or appointments alphabetically");
+				System.out.println("9.Delete Event or appointment");
 				System.out.println("10.Exit");
 				System.out.print("\nEnter your choice: ");
 
@@ -109,18 +109,18 @@ public class Phonebook {
 
 	public void deletingEvent() {
 		if (BstOfevent.empty()) {// 1
-			System.out.println("You don't have a Event yet\n");// 1
+			System.out.println("You don't have an Event or appointment yet\n");// 1
 			return;// 1
 		}
-		System.out.print("enter the Event title: ");// 1
+		System.out.print("Enter the title: ");// 1
 		String EventTitle = textInput.nextLine();// 1
-		textInput.nextLine();// 1
+		
 
 		boolean deleted = BstOfevent.remove_key(EventTitle);
 		if (deleted)
-			System.out.println("\nEvent deleted susccessfully!\n");// 1
+			System.out.println("\nSuccessfully deleted!\n");// 1
 		else
-			System.out.println("their is no Event with this Title try again\n");// 1
+			System.out.println("their is no Event or appointment with this Title try again\n");// 1
 
 	}
 
@@ -231,8 +231,9 @@ public class Phonebook {
 					System.out.println("\nthe event does not exist\n");
 					return;
 				}
-				else if(BstOfevent.retrieve().getEventOrAppointment()==0) {
-					System.out.print("this is an appointment so you can't");
+
+				if (BstOfevent.retrieve().getEventOrAppointment() == 2) {
+					System.out.println("\nIt is appointment, so you can't add contacts\n");
 					return;
 				}
 				Event e = BstOfevent.retrieve();
@@ -249,8 +250,7 @@ public class Phonebook {
 				// this loop to cheek there is conflict or not
 				BstOfevent.inOrderCheekingtheDate(contactname, e.getDateAndTime(), BstOfevent.root, Exist);
 				if (Exist.getValue()) {// 1
-					System.out.println("This event can't be scheduled because " + contactname
-							+ " is committed to an event at this date and time: " + e.getDateAndTime());// 1
+					System.out.println("\n"+ contactname +" has a committe on this date and time: " +e.getDateAndTime());
 					return;// 1
 				}
 
@@ -269,12 +269,34 @@ public class Phonebook {
 		String evnTitle, conName, dateAndTime, location;// 1
 		int isEventOrAppointent;
 		try {// 1
+			System.out.println("Enter The criteria:");// 1
+			System.out.println("1.Event");// 1
+			System.out.println("2.appointment");
+			System.out.print("\nEnter your choise: ");// 1
+			// System.out.println("enter 1 if you would like to book an event or 2 if you
+			// want to book an appointment");
 
-			System.out.print("Enter event title: ");// 1
+			isEventOrAppointent = textInput.nextInt();
+			textInput.nextLine();
+			if (isEventOrAppointent < 1 || isEventOrAppointent > 2) {
+				throw new InputMismatchException("this is an invalid input");
+			}
+
+			String type;
+			if (isEventOrAppointent == 1) {
+				type = "event";
+			} else
+				type = "appointment";
+
+			System.out.print("\nEnter " + type + " title: ");// 1
 
 			evnTitle = textInput.nextLine();// 1
+			if(BstOfevent.findkey(evnTitle)) {
+				System.out.println("\nYou already have event/appointment with this title, Try again\n");
+				return;
+			}
 
-			System.out.print("Enter event/appointment date and time (dd/mm/yyyy hh:mm): ");
+			System.out.print("Enter " + type + " date and time (dd/mm/yyyy hh:mm): ");
 			dateAndTime = textInput.nextLine();
 			if (dateAndTime.length() < 15 || dateAndTime.length() > 17) {// 1
 				System.out.print("\nthe date does't currect try again with this format (dd/mm/yyyy hh:mm)\n");// 1
@@ -285,15 +307,11 @@ public class Phonebook {
 
 			conName = textInput.nextLine();// 1
 
-			System.out.print("Enter event location: ");// 1
+			System.out.print("Enter the location: ");// 1
 
-			location = intInput.nextLine();// 1
+			location = textInput.nextLine();// 1
 			//textInput.nextLine();
-			System.out.println("enter 1 if you would like to book and event or 0 if you want to book an appointment");
-			isEventOrAppointent = intInput.nextInt();
-			if(isEventOrAppointent!=0 || isEventOrAppointent!=0) {
-				throw new InputMismatchException("this is an invalid input");
-			}
+
 			if (!BstOfContact.findkey(conName)) {// nLog(n)
 				System.out.println("\nThe contact doesn't exist in this phoebook!!\n");// 1
 				return;// 1
@@ -307,18 +325,18 @@ public class Phonebook {
 					BstOfevent.current = BstOfevent.root;
 					BstOfevent.inOrderCheekingtheDate(conName, dateAndTime, BstOfevent.root, Exist);
 					if (Exist.getValue()) {
-						System.out.println("This event can't be scheduled because " + conName
-								+ " is committed to an event at this date and time: " + dateAndTime);// n^2
+						System.out.println("\nThis " + type + " can't be scheduled because " + conName
+								+ " has a committe on the date and time: " + dateAndTime);// n^2
 						return;
 					}
 				}
 
 				Event newEvent = new Event(evnTitle, dateAndTime, location, isEventOrAppointent);// 1
-				
+
 				newEvent.getInvolvedContacts().insert(c.getName(), c);// nLog(n)
 				BstOfevent.insert(newEvent.getEventTitle(), newEvent);// nLog(n)
 
-				System.out.println("\nEvent scheduled successfully!\n");// 1
+				System.out.println("\n" + type + " scheduled successfully!\n");
 				// O()
 
 			}
@@ -347,34 +365,32 @@ public class Phonebook {
 			System.out.println("\nThere is no contact added yet\n");// 1
 
 	}
-/* we can put it in the menu if you want
- * 
-	public void printAllCountacts() {
-		// حاليا هذي مؤقته فقط للإختبار
-		if (!BstOfContact.empty()) {// 1
-			// BstOfContact.findFirst();// 1
-			while (BstOfContact.current != null) {// n+1
-				BstOfContact.retrieve().Display();// n
-				// BstOfContact.findNext();// n
-			}
 
-		} else// 1
-			System.out.println("There is no contact strting with this name\n");// 1
-		// bigO(n)
-	}
-*/
+	/*
+	 * we can put it in the menu if you want
+	 * 
+	 * public void printAllCountacts() { // حاليا هذي مؤقته فقط للإختبار if
+	 * (!BstOfContact.empty()) {// 1 // BstOfContact.findFirst();// 1 while
+	 * (BstOfContact.current != null) {// n+1 BstOfContact.retrieve().Display();// n
+	 * // BstOfContact.findNext();// n }
+	 * 
+	 * } else// 1
+	 * System.out.println("There is no contact strting with this name\n");// 1 //
+	 * bigO(n) }
+	 */
 	public void printEventDetails() {
 
 		try {// 1
 			if (BstOfevent.empty()) {// 1
-				System.out.println("\nyou have not added an event yet\n");// 1
+				System.out.println("\nyou have not added an event or appointment yet\n");// 1
 				return;// 1
 			}
 			System.out.println();// 1
 
-			System.out.println("Enter search criteria: \n1.contact name \n2.Event title");// 1 // firstly i asked the
-																							// user to input the
-																							// criteria of search
+			System.out.println("Enter search criteria: \n1.contact name \n2.Event/appointment title");
+			// 1 // firstly i asked the
+			// user to input the
+			// criteria of search
 
 			// this boolean variable for checking if the contact is found or not
 			BooleanWrapper flag = new BooleanWrapper(false); // 1
@@ -396,13 +412,13 @@ public class Phonebook {
 
 				// if you didn't find the event
 				if (!flag.getValue()) {// 1
-					System.out.println("their is no event accoiated with this contact \ntry again!");// 1
+					System.out.println("their is no event or appointment accoiated with this contact \ntry again!");// 1
 					return;// 1
 				}
 
 			} else if (choice == 2) {// 1
 				// if the user looking for search by event's title
-				System.out.print("\nEnter the event title: ");// 1
+				System.out.print("\nEnter the title: ");// 1
 				String eventName = textInput.nextLine();// 1
 
 				// if their is no event match with this title
@@ -410,7 +426,7 @@ public class Phonebook {
 					BstOfevent.retrieve().Display();// n
 					return;// 1
 				} else {// 1
-					System.out.println("their is no event by this name\ntry again");// 1
+					System.out.println("their is no event or appointment by this name\ntry again");// 1
 				}
 			}
 
@@ -423,11 +439,11 @@ public class Phonebook {
 
 	public void printEventAlphaberically() {
 		if (BstOfevent.empty()) {// 1
-			System.out.println("the list is empty add events please ");// 1
+			System.out.println("the list is empty add events or appointments please ");// 1
 			return;// 1
 		}
 
-		BstOfevent.PrintAll(BstOfevent.root);//inOrder
+		BstOfevent.PrintAll(BstOfevent.root);// inOrder
 
 	}
 
@@ -440,7 +456,6 @@ public class Phonebook {
 		}
 		System.out.print("\nenter the contact's name: ");// 1
 		String contactName = textInput.nextLine();// 1
-		
 
 		// if their is no contact by this name
 		if (!BstOfContact.findkey(contactName)) {//
