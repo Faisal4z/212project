@@ -55,7 +55,11 @@ public class Event implements Comparable<Event> {
 			type = "Appointment";
 
 		System.out.println("\n"+type +" title: " + eventTitle);
-
+if(eventOrAppointment==2) {
+	System.out.println("Contact's name: "+involvedContacts.root.data.getName());
+	
+}
+else {
 		System.out.println("Contact's name:");
 		
 		IntWrapper count = new IntWrapper(0);
@@ -63,7 +67,7 @@ public class Event implements Comparable<Event> {
 			// for print all names of contact inside the event
 		involvedContacts.PrintAllNamesOfcontact(count,involvedContacts.root );
 			
-		
+}
 		System.out.println(type +" date and time (DD/MM/YYYY HH:MM): " + dateAndTime);// 1
 		System.out.println(type +" location: " + location);// 1
 
